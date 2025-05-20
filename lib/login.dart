@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'service/login_service.dart'; 
+import 'screens/codigo.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   late Animation<double> _opacity2;
 
   final TextEditingController telefonoController = TextEditingController();
+  final LoginService loginService = LoginService();
 
   @override
   void initState() {
@@ -45,6 +48,30 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     _controller2.dispose();
     telefonoController.dispose();
     super.dispose();
+  }
+
+  Future<void> validarTelefono() async {
+    String numero = telefonoController.text.trim();
+
+    if (numero.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor ingresa un número de teléfono')),
+      );
+      return;
+    }
+
+    final respuesta = await loginService.buscarUsuario(numero);
+
+    if (respuesta["success"] == true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CodigoScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(respuesta["mensaje"] ?? 'Error desconocido')),
+      );
+    }
   }
 
   @override
@@ -81,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             'Hey,',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 32,
+                              fontSize: 38,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -93,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             'Bienvenido de nuevo',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 36,
+                              fontSize: 38,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -134,12 +161,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
-                      String numero = telefonoController.text;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Número ingresado: $numero')),
-                      );
-                    },
+                    onPressed: validarTelefono,
                     child: const Text(
                       'Validar número',
                       style: TextStyle(fontSize: 16),
@@ -154,5 +176,4 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       ),
     );
   }
-
 }
