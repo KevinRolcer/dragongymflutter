@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'service/login_service.dart'; 
-import 'screens/codigo.dart';
+import 'service/login_service.dart';
+import 'codigo.dart';
+import 'screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +19,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   final TextEditingController telefonoController = TextEditingController();
   final LoginService loginService = LoginService();
+
+  bool cargando = false; 
 
   @override
   void initState() {
@@ -60,19 +63,58 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       return;
     }
 
-    final respuesta = await loginService.buscarUsuario(numero);
+    setState(() {
+      cargando = true;
+    });
 
-    if (respuesta["success"] == true) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const CodigoScreen()),
-      );
-    } else {
+    try {
+      final respuesta = await loginService.buscarUsuario(numero);
+
+      if (respuesta["success"] == true) {
+        if (respuesta["pin_asignado"] == false) {
+          if (mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CodigoScreen(telefonoInicial: numero),
+              ),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('El usuario ya tiene PIN asignado')),
+          );
+        }
+      } else {
+        String mensaje = respuesta["mensaje"] ?? 'Error desconocido';
+        if (mensaje.contains("ya tiene un PIN")) {
+          if (mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(mensaje)),
+          );
+        }
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(respuesta["mensaje"] ?? 'Error desconocido')),
+        const SnackBar(content: Text('Ocurrió un error al validar')),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          cargando = false;
+        });
+      }
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -161,8 +203,17 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: validarTelefono,
-                    child: const Text(
+                    onPressed: cargando ? null : validarTelefono,
+                    child: cargando
+                        ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                        strokeWidth: 2.5,
+                      ),
+                    )
+                        : const Text(
                       'Validar número',
                       style: TextStyle(fontSize: 16),
                     ),
