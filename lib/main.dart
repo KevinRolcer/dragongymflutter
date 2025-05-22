@@ -4,6 +4,7 @@ import 'login.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/home.dart';
+import 'screens/promo.dart';
 import 'pin.dart';
 
 void main() async {
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => const HomePage(),
         '/pin': (context) => PinScreen(),
+        '/promo': (context) => PromoScreen(),
       },
     );
   }

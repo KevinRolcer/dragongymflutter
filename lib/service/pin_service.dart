@@ -87,4 +87,36 @@ class PinService {
       };
     }
   }
+
+  Future<Map<String, dynamic>> validarPin(String telefono, int pin) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/pin.php"),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: jsonEncode({
+          "accion": "validar",
+          "Telefono": telefono,
+          "pin": pin.toString().padLeft(4, '0'),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        return {
+          "success": false,
+          "mensaje": "Error del servidor: ${response.statusCode}"
+        };
+      }
+    } catch (e) {
+      return {
+        "success": false,
+        "mensaje": "Error de conexión: ${e.toString()}"
+      };
+    }
+  }
+
 }

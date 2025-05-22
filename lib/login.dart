@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'service/login_service.dart';
 import 'codigo.dart';
 import 'screens/home.dart';
+import 'acceso.dart';
+import 'package:dragongym/values/app_colors.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -91,7 +94,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           if (mounted) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
+              MaterialPageRoute(
+                builder: (context) => AccesoScreen(telefonoInicial: numero),
+              ),
             );
           }
         } else {
@@ -132,9 +137,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             child: Column(
               children: [
                 Image.asset(
-                  'assets/dragonLogoSn.png',
-                  width: 120,
-                  height: 120,
+                  'assets/logo.jpg',
+                  width: 140,
+                  height: 140,
                 ),
                 const SizedBox(height: 24),
                 Align(

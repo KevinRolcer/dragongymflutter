@@ -3,6 +3,8 @@ import 'screens/home.dart';
 import 'package:flutter/services.dart';
 import 'service/pin_service.dart';
 import 'dart:async';
+import 'package:dragongym/values/app_colors.dart';
+
 
 class PinScreen extends StatefulWidget {
   final String? telefonoInicial;
@@ -82,7 +84,7 @@ class _PinScreenState extends State<PinScreen> with SingleTickerProviderStateMix
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Los PINs no coinciden', style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.redAccent,
+          backgroundColor:AppColors.primaryColor,
         ),
       );
       setState(() {
@@ -94,7 +96,7 @@ class _PinScreenState extends State<PinScreen> with SingleTickerProviderStateMix
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('PIN creado exitosamente', style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.activeColor,
         ),
       );
 
@@ -121,7 +123,7 @@ class _PinScreenState extends State<PinScreen> with SingleTickerProviderStateMix
           transform: Matrix4.translationValues(offset, 0, 0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: valor.length >= 1 ? Colors.redAccent : Colors.white.withOpacity(0.3),
+            color: valor.length >= 1 ? AppColors.activeColor : Colors.white.withOpacity(0.3),
           ),
         );
       },
@@ -135,9 +137,9 @@ class _PinScreenState extends State<PinScreen> with SingleTickerProviderStateMix
     String entradaActual = pasoConfirmacion ? repetirPin : pin;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.darkMode,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.darkMode,
         elevation: 0,
         leading: pasoConfirmacion
             ? IconButton(
@@ -197,7 +199,7 @@ class _PinScreenState extends State<PinScreen> with SingleTickerProviderStateMix
                               width: 60,
                               height: 60,
                               decoration: BoxDecoration(
-                                color: Colors.white10,
+                                color: AppColors.darkMode,
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
@@ -214,7 +216,7 @@ class _PinScreenState extends State<PinScreen> with SingleTickerProviderStateMix
                   if (pasoConfirmacion && repetirPin.length == 4)
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
+                        backgroundColor: AppColors.primaryColor,
                         padding: EdgeInsets.symmetric(horizontal: 60, vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       ),

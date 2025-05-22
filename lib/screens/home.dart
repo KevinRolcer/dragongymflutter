@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:dragongym/values/app_colors.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,11 +24,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _generateWeekDays() {
-    // Generar días de la semana actual
     DateTime now = DateTime.now();
     int weekDay = now.weekday;
 
-    // Encontrar el lunes de esta semana
     DateTime monday = now.subtract(Duration(days: weekDay - 1));
 
     _weekDates = List.generate(7, (index) =>
@@ -59,12 +59,12 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.apps, color: Colors.black54),
+          Icon(Icons.apps, color: AppColors.darkMode),
           Row(
             children: [
-              Icon(Icons.notifications_outlined, color: Colors.black54),
+              Icon(Icons.notifications_outlined, color: AppColors.darkMode),
               SizedBox(width: 16),
-              Icon(Icons.add_circle_outline, color: Colors.black54),
+              Icon(Icons.add_circle_outline, color: AppColors.darkMode),
             ],
           ),
         ],
@@ -83,7 +83,6 @@ class _HomePageState extends State<HomePage> {
               date.month == _selectedDate.month &&
               date.year == _selectedDate.year;
 
-          // Abreviaciones de los días de la semana en español
           final weekDayNames = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'];
 
           return GestureDetector(
@@ -97,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   weekDayNames[index],
                   style: TextStyle(
-                    color: isSelected ? Colors.pink : Colors.black54,
+                    color: isSelected ? AppColors.primaryColor : Colors.black54,
                     fontSize: 12,
                   ),
                 ),
@@ -107,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                   height: 36,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected ? Colors.pink : Colors.transparent,
+                    color: isSelected ? AppColors.primaryColor : Colors.transparent,
                   ),
                   child: Center(
                     child: Text(
@@ -134,9 +133,9 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           Text(
-            'Today, ${formatter.format(_selectedDate)}',
+            'Hoy, ${formatter.format(_selectedDate)}',
             style: TextStyle(
-              color: Colors.pink,
+              color: AppColors.primaryColor,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -158,7 +157,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           SizedBox(height: 20),
           Text(
-            'Monitor your med schedule',
+            'Actividad diaria',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -175,14 +174,14 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.pink,
+              backgroundColor: AppColors.primaryColor,
               minimumSize: Size(double.infinity, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             child: Text(
-              'Add a Medicine',
+              'Agregar nota',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -211,28 +210,39 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               _selectedIndex = index;
             });
+
+            switch (index) {
+
+              case 1:
+                Navigator.pushNamed(context, '/promo');
+                break;
+              case 2:
+                Navigator.pushNamed(context, '/home');
+                break;
+
+            }
           },
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.pink,
+          selectedItemColor: AppColors.primaryColor,
           unselectedItemColor: Colors.grey,
           backgroundColor: Colors.white,
           elevation: 0,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.access_time),
-              label: 'Horario',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: 'Calendario',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
               label: 'Alertas',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.discount),
+              label: 'Promos',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Inicio',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.money),
+              label: 'Membresía',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

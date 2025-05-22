@@ -1,0 +1,10 @@
+import 'package:flutter/material.dart';
+
+class AppColors {
+  static const Color primaryColor = Color(0xFFBF1E2E);
+  static const Color darkMode = Color(0xFF000000);
+  static const Color backgroundColor = Color(0xFFF5F5F5);
+  static const Color textColor = Color(0xFF8D2E27);
+  static const Color inactiveColor = Color(0xFF108D08);
+  static const Color activeColor = Color(0xFF28632E);
+}
