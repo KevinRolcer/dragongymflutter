@@ -4,6 +4,10 @@ import 'codigo.dart';
 import 'screens/home.dart';
 import 'acceso.dart';
 import 'package:dragongym/values/app_colors.dart';
+import 'package:provider/provider.dart';
+import 'service/usuario_provider.dart';
+
+
 
 
 class LoginScreen extends StatefulWidget {
@@ -75,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
       if (respuesta["success"] == true) {
         if (respuesta["pin_asignado"] == false) {
+          Provider.of<UsuarioProvider>(context, listen: false).setTelefono(numero);
           if (mounted) {
             Navigator.pushReplacement(
               context,
@@ -91,7 +96,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       } else {
         String mensaje = respuesta["mensaje"] ?? 'Error desconocido';
         if (mensaje.contains("ya tiene un PIN")) {
+          Provider.of<UsuarioProvider>(context, listen: false).setTelefono(numero);
           if (mounted) {
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(

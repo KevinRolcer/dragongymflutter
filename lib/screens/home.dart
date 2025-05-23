@@ -145,6 +145,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildContent() {
+
     return Container(
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.all(20),
@@ -165,7 +166,7 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 10),
           Text(
-            'Contenido del home aquí',
+            'Nada aun...',
             style: TextStyle(
               color: Colors.grey,
             ),
@@ -218,6 +219,9 @@ class _HomePageState extends State<HomePage> {
                 break;
               case 2:
                 Navigator.pushNamed(context, '/home');
+                break;
+              case 4:
+                Navigator.pushNamed(context, '/perfil');
                 break;
 
             }
