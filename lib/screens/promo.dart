@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/promos.dart';
+import '../service/promo_service.dart';
 import 'package:dragongym/values/app_colors.dart';
 
 
@@ -9,50 +10,32 @@ class PromoScreen extends StatefulWidget {
 }
 
 class _PromoScreenState extends State<PromoScreen> {
-  int _selectedIndex = 1; 
+  int _selectedIndex = 1;
 
-  List<Promo> promos = [
-    Promo(
-      id: "001",
-      title: "CLASES GRUPALES",
-      subtitle: "Obtén 2 clases por el precio de 1",
-      offerText: "2x1",
-      description: "Disfruta de nuestras clases grupales con esta increíble promoción. Válido para spinning, yoga, pilates y más.",
-      terms: "Válido solo para nuevos miembros. No acumulable con otras promociones. Válido hasta agotar existencias.",
-      validUntil: DateTime(2025, 6, 30),
-      category: "Clases",
-    ),
-    Promo(
-      id: "002",
-      title: "ENTRENAMIENTO PERSONAL",
-      subtitle: "50% de descuento en tu primera sesión",
-      offerText: "50% OFF",
-      description: "Comienza tu rutina de entrenamiento personal con nuestros mejores entrenadores certificados.",
-      terms: "Válido para nuevos clientes. Sesión de 60 minutos. Debe programarse con anticipación.",
-      validUntil: DateTime(2025, 7, 15),
-      category: "Personal",
-    ),
-    Promo(
-      id: "003",
-      title: "MEMBRESÍA ANUAL",
-      subtitle: "3 meses gratis al comprar membresía anual",
-      offerText: "3 MESES GRATIS",
-      description: "Aprovecha esta oferta especial y obtén acceso completo al gimnasio por 15 meses pagando solo 12.",
-      terms: "Oferta válida hasta fin de mes. Incluye acceso a todas las áreas y clases grupales.",
-      validUntil: DateTime(2025, 5, 31),
-      category: "Membresía",
-    ),
-    Promo(
-      id: "004",
-      title: "SUPLEMENTOS",
-      subtitle: "Compra 2 y llévate 3 productos",
-      offerText: "2x3",
-      description: "Lleva tus suplementos favoritos con esta promoción especial en nuestra tienda.",
-      terms: "Válido solo en productos seleccionados. No incluye proteínas premium.",
-      validUntil: DateTime(2025, 6, 10),
-      category: "Tienda",
-    ),
-  ];
+  List<Promo> promos = [];
+  @override
+  void initState() {
+    super.initState();
+    cargarPromociones().then((_) {
+      setState(() {});
+    });
+  }
+
+  Future<void> cargarPromociones() async {
+    final servicio = PromoService();
+    final respuesta = await servicio.obtenerPromociones();
+
+    if (respuesta['success']) {
+      final datos = respuesta['data'] as List;
+
+      promos = datos.map((item) => Promo.fromJson(item)).toList();
+
+      print("Promociones cargadas: ${promos.length}");
+    } else {
+      print("Error: ${respuesta['mensaje']}");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +113,7 @@ class _PromoScreenState extends State<PromoScreen> {
             "Descuentos y ofertas especiales",
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: AppColors.darkMode,
             ),
           ),
           SizedBox(height: 20),
@@ -191,7 +174,7 @@ class _PromoScreenState extends State<PromoScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: AppColors.grayColor,
                         ),
                       ),
                       SizedBox(height: 4),
@@ -199,7 +182,7 @@ class _PromoScreenState extends State<PromoScreen> {
                         promo.subtitle,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[600],
+                          color: AppColors.grayColor,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -207,7 +190,7 @@ class _PromoScreenState extends State<PromoScreen> {
                         "Válido hasta: ${promo.formattedValidUntil}",
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.primaryColor,
+                          color: AppColors.redColor,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -216,7 +199,7 @@ class _PromoScreenState extends State<PromoScreen> {
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.grey[400],
+                  color: AppColors.backgroundColor,
                   size: 16,
                 ),
               ],
@@ -247,7 +230,7 @@ class _PromoScreenState extends State<PromoScreen> {
             ),
             child: Column(
               children: [
-                // Handle
+
                 Container(
                   margin: EdgeInsets.only(top: 12),
                   width: 40,
@@ -303,7 +286,7 @@ class _PromoScreenState extends State<PromoScreen> {
                                     promo.subtitle,
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.grey[600],
+                                      color: AppColors.primaryColor,
                                     ),
                                   ),
                                 ],
@@ -421,12 +404,7 @@ class _PromoScreenState extends State<PromoScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Promoción aplicada correctamente"),
-                            backgroundColor: AppColors.primaryColor,
-                          ),
-                        );
+
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
@@ -435,7 +413,7 @@ class _PromoScreenState extends State<PromoScreen> {
                         ),
                       ),
                       child: Text(
-                        "Usar Promoción",
+                        "Cerrar promoción",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

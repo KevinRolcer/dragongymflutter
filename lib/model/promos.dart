@@ -1,4 +1,3 @@
-
 class Promo {
   final String id;
   final String title;
@@ -24,5 +23,19 @@ class Promo {
 
   String get formattedValidUntil {
     return "${validUntil.day}/${validUntil.month}/${validUntil.year}";
+  }
+
+  factory Promo.fromJson(Map<String, dynamic> json) {
+    return Promo(
+      id: json['id'],
+      title: json['title'],
+      subtitle: json['subtitle'],
+      offerText: json['offer_text'],
+      description: json['description'],
+      terms: json['terms'],
+      validUntil: DateTime.parse(json['valid_until']),
+      category: json['category'],
+      isActive: json['is_active'] == "1" || json['is_active'] == 1,
+    );
   }
 }
