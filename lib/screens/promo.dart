@@ -40,7 +40,7 @@ class _PromoScreenState extends State<PromoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.darkMode,
       body: SafeArea(
         child: Column(
           children: [
@@ -63,30 +63,30 @@ class _PromoScreenState extends State<PromoScreen> {
           Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.8),
+              color: AppColors.blackBack,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               Icons.grid_view,
-              color: Colors.black54,
+              color: AppColors.backgroundColor,
             ),
           ),
           Spacer(),
           Icon(
             Icons.notifications_outlined,
-            color: Colors.black54,
+            color: AppColors.primaryColor,
             size: 24,
           ),
           SizedBox(width: 16),
           Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.8),
+              color: AppColors.blackBack,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.add,
-              color: Colors.black54,
+              color: AppColors.backgroundColor,
             ),
           ),
         ],
@@ -105,7 +105,7 @@ class _PromoScreenState extends State<PromoScreen> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor,
+              color: AppColors.backgroundColor,
             ),
           ),
           SizedBox(height: 8),
@@ -113,7 +113,7 @@ class _PromoScreenState extends State<PromoScreen> {
             "Descuentos y ofertas especiales",
             style: TextStyle(
               fontSize: 16,
-              color: AppColors.darkMode,
+              color: AppColors.redColor,
             ),
           ),
           SizedBox(height: 20),
@@ -174,7 +174,7 @@ class _PromoScreenState extends State<PromoScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.grayColor,
+                          color: AppColors.backgroundColor,
                         ),
                       ),
                       SizedBox(height: 4),
@@ -222,7 +222,7 @@ class _PromoScreenState extends State<PromoScreen> {
         builder: (context, scrollController) {
           return Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.secondColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -276,9 +276,9 @@ class _PromoScreenState extends State<PromoScreen> {
                                   Text(
                                     promo.title,
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 28,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
+                                      color: AppColors.backgroundColor,
                                     ),
                                   ),
                                   SizedBox(height: 4),
@@ -286,7 +286,7 @@ class _PromoScreenState extends State<PromoScreen> {
                                     promo.subtitle,
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: AppColors.primaryColor,
+                                      color: AppColors.redColor,
                                     ),
                                   ),
                                 ],
@@ -301,7 +301,7 @@ class _PromoScreenState extends State<PromoScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: AppColors.backgroundColor,
                           ),
                         ),
                         SizedBox(height: 8),
@@ -309,7 +309,7 @@ class _PromoScreenState extends State<PromoScreen> {
                           promo.description,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[700],
+                            color: AppColors.grayColor,
                             height: 1.5,
                           ),
                         ),
@@ -320,7 +320,7 @@ class _PromoScreenState extends State<PromoScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: AppColors.backgroundColor,
                           ),
                         ),
                         SizedBox(height: 8),
@@ -328,7 +328,7 @@ class _PromoScreenState extends State<PromoScreen> {
                           promo.terms,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[700],
+                            color: AppColors.grayColor,
                             height: 1.5,
                           ),
                         ),
@@ -352,7 +352,7 @@ class _PromoScreenState extends State<PromoScreen> {
                                 "Válido hasta: ${promo.formattedValidUntil}",
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.backgroundColor,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -434,7 +434,7 @@ class _PromoScreenState extends State<PromoScreen> {
   Widget _buildBottomNavigationBar() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.secondColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -467,9 +467,11 @@ class _PromoScreenState extends State<PromoScreen> {
             }
           },
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppColors.primaryColor,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.white,
+          selectedItemColor: AppColors.backgroundColor,
+          unselectedItemColor: AppColors.backgroundColor,
+          selectedIconTheme: IconThemeData(color: AppColors.primaryColor),
+          unselectedIconTheme: IconThemeData(color: AppColors.backgroundColor),
+          backgroundColor: AppColors.secondColor,
           elevation: 0,
           items: [
             BottomNavigationBarItem(

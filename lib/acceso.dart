@@ -145,9 +145,9 @@ class _AccesoScreenState extends State<AccesoScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkMode,
+      backgroundColor: AppColors.blackBack,
       appBar: AppBar(
-        backgroundColor: AppColors.darkMode,
+        backgroundColor: AppColors.blackBack,
         elevation: 0,
       ),
       body: Padding(

@@ -46,7 +46,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Text(
             "Editar PIN",
-            style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold),
+            style: TextStyle(color: AppColors.backgroundColor, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
           content: Column(
@@ -62,7 +62,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                     decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.primaryColor, width: 2),
+                      border: Border.all(color: AppColors.grayColor, width: 2),
                     ),
                     alignment: Alignment.center,
                     child: TextField(
@@ -104,7 +104,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               Text(
                 "Ingresa tu nuevo PIN de 4 dígitos",
                 style: TextStyle(
-                  color: Colors.grey[600],
+                  color: AppColors.grayColor,
                   fontSize: 12,
                 ),
                 textAlign: TextAlign.center,
@@ -115,7 +115,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             TextButton(
               child: Text(
                 "Cancelar",
-                style: TextStyle(color: Colors.grey[600]),
+                style: TextStyle(color: AppColors.grayColor),
               ),
               onPressed: () {
                 for (var node in focusNodes) {
@@ -126,7 +126,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
+                backgroundColor: AppColors.backgroundColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -199,7 +199,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               "$label:",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
+                color: AppColors.grayColor,
                 fontSize: 14,
               ),
             ),
@@ -209,7 +209,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               value,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Colors.black87,
+                color: AppColors.backgroundColor,
                 fontSize: 14,
               ),
             ),
@@ -223,7 +223,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.secondColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -240,7 +240,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             width: double.infinity,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: AppColors.primaryColor.withOpacity(0.1),
+              color: AppColors.grayColor.withOpacity(0.1),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
@@ -254,7 +254,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
+                    color: AppColors.backgroundColor,
                   ),
                 ),
                 if (actionButton != null) actionButton,
@@ -275,7 +275,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   Widget _buildBottomNavigationBar() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.secondColor,
         borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         boxShadow: [
           BoxShadow(
@@ -304,9 +304,11 @@ class _PerfilScreenState extends State<PerfilScreen> {
             }
           },
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppColors.primaryColor,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.white,
+          selectedItemColor: AppColors.backgroundColor,
+          unselectedItemColor: AppColors.backgroundColor,
+          selectedIconTheme: IconThemeData(color: AppColors.primaryColor),
+          unselectedIconTheme: IconThemeData(color: AppColors.backgroundColor),
+          backgroundColor: AppColors.secondColor,
           elevation: 0,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Alertas'),
@@ -324,7 +326,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   Widget build(BuildContext context) {
     final telefono = Provider.of<UsuarioProvider>(context).telefono;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.darkMode,
       body: SafeArea(
         child: Column(
           children: [
@@ -336,7 +338,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
+                  color: AppColors.backgroundColor,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -377,7 +379,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                             label: Text(
                               "Editar PIN",
                               style: TextStyle(
-                                color: AppColors.primaryColor,
+                                color: AppColors.redColor,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

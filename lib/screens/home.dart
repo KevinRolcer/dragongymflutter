@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late DateTime _selectedDate;
   late List<DateTime> _weekDates;
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppColors.blackBack,
       body: SafeArea(
         child: Column(
           children: [
@@ -54,23 +54,44 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return Container(
+      padding: EdgeInsets.all(20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.apps, color: AppColors.darkMode),
-          Row(
-            children: [
-              Icon(Icons.notifications_outlined, color: AppColors.darkMode),
-              SizedBox(width: 16),
-              Icon(Icons.add_circle_outline, color: AppColors.darkMode),
-            ],
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.secondColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.grid_view,
+              color: AppColors.backgroundColor,
+            ),
+          ),
+          Spacer(),
+          Icon(
+            Icons.notifications_outlined,
+            color: AppColors.primaryColor,
+            size: 24,
+          ),
+          SizedBox(width: 16),
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.secondColor,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.add,
+              color: AppColors.backgroundColor,
+            ),
           ),
         ],
       ),
     );
   }
+
 
   Widget _buildCalendar() {
     return Container(
@@ -96,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   weekDayNames[index],
                   style: TextStyle(
-                    color: isSelected ? AppColors.primaryColor : Colors.black54,
+                    color: isSelected ? AppColors.primaryColor : Colors.white,
                     fontSize: 12,
                   ),
                 ),
@@ -112,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text(
                       date.day.toString(),
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
+                        color: isSelected ? Colors.white : Colors.white,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
@@ -135,7 +156,7 @@ class _HomePageState extends State<HomePage> {
           Text(
             'Hoy, ${formatter.format(_selectedDate)}',
             style: TextStyle(
-              color: AppColors.primaryColor,
+              color: AppColors.backgroundColor,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -150,7 +171,7 @@ class _HomePageState extends State<HomePage> {
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.secondColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -161,6 +182,7 @@ class _HomePageState extends State<HomePage> {
             'Actividad diaria',
             style: TextStyle(
               fontSize: 20,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -168,7 +190,7 @@ class _HomePageState extends State<HomePage> {
           Text(
             'Nada aun...',
             style: TextStyle(
-              color: Colors.grey,
+              color: Colors.white,
             ),
           ),
           Spacer(),
@@ -194,7 +216,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBottomNavigationBar() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.secondColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -217,9 +239,7 @@ class _HomePageState extends State<HomePage> {
               case 1:
                 Navigator.pushNamed(context, '/promo');
                 break;
-              case 2:
-                Navigator.pushNamed(context, '/home');
-                break;
+
               case 4:
                 Navigator.pushNamed(context, '/perfil');
                 break;
@@ -227,9 +247,11 @@ class _HomePageState extends State<HomePage> {
             }
           },
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppColors.primaryColor,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.white,
+          selectedItemColor: AppColors.backgroundColor,
+          unselectedItemColor: AppColors.backgroundColor,
+          selectedIconTheme: IconThemeData(color: AppColors.primaryColor),
+          unselectedIconTheme: IconThemeData(color: AppColors.backgroundColor),
+          backgroundColor: AppColors.secondColor,
           elevation: 0,
           items: [
             BottomNavigationBarItem(
