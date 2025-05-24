@@ -133,7 +133,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ),
               child: Text(
                 "Guardar",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold),
               ),
               onPressed: () async {
                 nuevoPin = controladores.map((c) => c.text).join();
@@ -300,6 +300,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 break;
               case 2:
                 Navigator.pushNamed(context, '/home');
+                break;
+              case 3:
+                Navigator.pushNamed(context, '/membresia');
                 break;
             }
           },

@@ -79,8 +79,8 @@ class _AccesoScreenState extends State<AccesoScreen> with SingleTickerProviderSt
       if (valido) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('PIN correcto', style: TextStyle(color: Colors.white)),
-            backgroundColor: AppColors.primaryColor,
+            content: Text('PIN correcto', style: TextStyle(color: AppColors.backgroundColor)),
+            backgroundColor: AppColors.inactiveColor,
           ),
         );
 
@@ -97,7 +97,7 @@ class _AccesoScreenState extends State<AccesoScreen> with SingleTickerProviderSt
         _triggerShake();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('PIN incorrecto', style: TextStyle(color: AppColors.primaryColor)),
+            content: Text('PIN incorrecto', style: TextStyle(color: AppColors.backgroundColor)),
             backgroundColor: AppColors.primaryColor,
           ),
         );

@@ -459,6 +459,9 @@ class _PromoScreenState extends State<PromoScreen> {
                 break;
               case 2:
                 Navigator.pushNamed(context, '/home');
+              case 3:
+                Navigator.pushNamed(context, '/membresia');
+                break;
                 break;
               case 4:
                 Navigator.pushNamed(context, '/perfil');

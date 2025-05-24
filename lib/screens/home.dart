@@ -239,7 +239,9 @@ class _HomePageState extends State<HomePage> {
               case 1:
                 Navigator.pushNamed(context, '/promo');
                 break;
-
+              case 3:
+                Navigator.pushNamed(context, '/membresia');
+                break;
               case 4:
                 Navigator.pushNamed(context, '/perfil');
                 break;

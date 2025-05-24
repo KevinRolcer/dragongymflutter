@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'service/usuario_provider.dart';
-
+import 'screens/membresia.dart';
 import 'login.dart';
 import 'screens/home.dart';
 import 'screens/promo.dart';
@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/pin': (context) => PinScreen(),
         '/promo': (context) => PromoScreen(),
         '/perfil': (context) => PerfilScreen(),
+        '/membresia': (context)=> MembresiaScreen(),
       },
     );
   }
