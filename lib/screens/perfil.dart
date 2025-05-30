@@ -391,11 +391,10 @@ class _PerfilScreenState extends State<PerfilScreen> {
                         _buildSectionContainer(
                           "Membresía",
                           [
-                            _buildDato("ID Miembro", membresia.idMiembro.toString()),
+                            _buildDato("No. Miembro", membresia.idMembresia.toString()),
                             _buildDato("Fecha Inicio", membresia.fechaInicio.toString()),
                             _buildDato("Fecha Fin", membresia.fechaFin.toString()),
-                            _buildDato("Fecha Pago", membresia.fechaPago.toString()),
-                            _buildDato("ID Membresía", membresia.idMembresia.toString()),
+                            _buildDato("Último pago", membresia.fechaPago.toString()),
                           ],
                         ),
                         SizedBox(height: 100),
