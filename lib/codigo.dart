@@ -17,6 +17,7 @@ class _CodigoScreenState extends State<CodigoScreen> with TickerProviderStateMix
   String _verificationId = "";
   bool _isLoading = false;
 
+
   bool _puedeReenviar = false;
   int _segundosRestantes = 60;
   Timer? _timer;
@@ -55,6 +56,14 @@ class _CodigoScreenState extends State<CodigoScreen> with TickerProviderStateMix
     Future.delayed(const Duration(milliseconds: 500), () {
       FocusScope.of(context).requestFocus(_focusNode);
     });
+  }
+
+  String get telefonoOculto {
+    final telefono = widget.telefonoInicial;
+    if (telefono.length >= 4) {
+      return '****${telefono.substring(telefono.length - 2)}';
+    }
+    return '****';
   }
 
   void _onFocusChange() {
@@ -239,7 +248,7 @@ class _CodigoScreenState extends State<CodigoScreen> with TickerProviderStateMix
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Text(
-                        "Porfavor ingresa el código mandado a\n+52${widget.telefonoInicial}",
+                        "Porfavor ingresa el código mandado a +52\n$telefonoOculto",
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.white70, fontSize: 16),
                       ),

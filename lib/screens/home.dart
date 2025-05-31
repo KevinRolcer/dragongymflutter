@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:dragongym/values/app_colors.dart';
+import '../service/accesos_service.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -15,12 +16,57 @@ class _HomePageState extends State<HomePage> {
   late DateTime _selectedDate;
   late List<DateTime> _weekDates;
   int _selectedIndex = 2;
+  int? accesosActuales;
+  int? capacidadMaxima;
+  int? disponibilidad;
+  bool cargando = true;
+  String? mensajeError;
+
 
   @override
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
     _generateWeekDays();
+    _cargarEstadoGimnasio();
+  }
+
+  Widget _botonRefrescar() {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {});
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primaryColor,
+        minimumSize: Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: Text(
+        'Refrescar estado',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  Future<void> _cargarEstadoGimnasio() async {
+    final servicio = AccesosService();
+    final respuesta = await servicio.obtenerEstadoGimnasio();
+
+    if (respuesta["success"] == true) {
+      setState(() {
+        accesosActuales = respuesta["accesos_actuales"];
+        capacidadMaxima = respuesta["capacidad_maxima"];
+        disponibilidad = respuesta["disponibilidad"];
+        cargando = false;
+      });
+    } else {
+      setState(() {
+        mensajeError = respuesta["mensaje"];
+        cargando = false;
+      });
+    }
   }
 
   void _generateWeekDays() {
@@ -166,7 +212,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildContent() {
-
     return Container(
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.all(20),
@@ -174,44 +219,135 @@ class _HomePageState extends State<HomePage> {
         color: AppColors.secondColor,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20),
-          Text(
-            'Actividad diaria',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Nada aun...',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          Spacer(),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              minimumSize: Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+      child: FutureBuilder<Map<String, dynamic>>(
+        future: AccesosService().obtenerEstadoGimnasio(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError || snapshot.data == null || snapshot.data!['success'] != true) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Error al cargar disponibilidad.',
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
+                Spacer(),
+                _botonRefrescar(),
+              ],
+            );
+          }
+
+          final data = snapshot.data!;
+          int accesos = data['accesos_actuales'];
+          int capacidadMaxima = data['capacidad_maxima'];
+          double porcentaje = (accesos / capacidadMaxima) * 100;
+
+          if (porcentaje < 10) {
+            porcentaje = 10;
+          }
+          if (porcentaje > 90) {
+            porcentaje = 100;
+          }
+          String mensaje;
+          Color containerColor;
+
+          if (porcentaje < 30) {
+            mensaje = 'Muy buen momento para ir';
+            containerColor = AppColors.activeColor;
+          } else if (porcentaje < 50) {
+            mensaje = 'Buen momento para ir';
+            containerColor = AppColors.blueColor;
+          } else if (porcentaje < 70) {
+            mensaje = 'Estamos un poco saturados';
+            containerColor = AppColors.amaColor;
+          } else if (porcentaje < 90) {
+            mensaje = 'Gimnasio muy concurrido';
+            containerColor = AppColors.orangeColor;
+          } else {
+            mensaje = 'No recomendable, gimnasio lleno';
+            containerColor = AppColors.textColor;
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10),
+              Text(
+                'Estado del gimnasio',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            child: Text(
-              'Agregar nota',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: containerColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      mensaje,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Capacidad: ${porcentaje.toStringAsFixed(0)}%',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {});
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: containerColor,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            minimumSize: Size(0, 0),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.refresh, size: 18),
+                              SizedBox(width: 6),
+                              Text(' ', style: TextStyle(fontSize: 14)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+            ],
+          );
+        },
       ),
     );
   }
+
+
 
   Widget _buildBottomNavigationBar() {
     return Container(
