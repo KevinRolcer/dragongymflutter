@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   int? accesosActuales;
   int? capacidadMaxima;
   int? disponibilidad;
+  String horaSugerida = '';
   bool cargando = true;
   String? mensajeError;
 
@@ -59,6 +60,7 @@ class _HomePageState extends State<HomePage> {
         accesosActuales = respuesta["accesos_actuales"];
         capacidadMaxima = respuesta["capacidad_maxima"];
         disponibilidad = respuesta["disponibilidad"];
+        horaSugerida = respuesta["hora_sugerida"];
         cargando = false;
       });
     } else {
@@ -228,13 +230,14 @@ class _HomePageState extends State<HomePage> {
 
           if (snapshot.hasError || snapshot.data == null || snapshot.data!['success'] != true) {
             return Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Error al cargar disponibilidad.',
                   style: TextStyle(color: Colors.red, fontSize: 16),
                 ),
-                Spacer(),
+                SizedBox(height: 12),
                 _botonRefrescar(),
               ],
             );
@@ -244,21 +247,19 @@ class _HomePageState extends State<HomePage> {
           int accesos = data['accesos_actuales'];
           int capacidadMaxima = data['capacidad_maxima'];
           double porcentaje = (accesos / capacidadMaxima) * 100;
+          String horaSugerida = data['hora_sugerida'] ?? '';
 
-          if (porcentaje < 10) {
-            porcentaje = 10;
-          }
-          if (porcentaje > 90) {
-            porcentaje = 100;
-          }
+          if (porcentaje < 10) porcentaje = 10;
+          if (porcentaje > 90) porcentaje = 100;
+
           String mensaje;
           Color containerColor;
 
           if (porcentaje < 30) {
-            mensaje = 'Muy buen momento para ir';
+            mensaje = 'Muy buen momento entrenar';
             containerColor = AppColors.activeColor;
           } else if (porcentaje < 50) {
-            mensaje = 'Buen momento para ir';
+            mensaje = 'Buen momento para entrenar';
             containerColor = AppColors.blueColor;
           } else if (porcentaje < 70) {
             mensaje = 'Estamos un poco saturados';
@@ -272,9 +273,10 @@ class _HomePageState extends State<HomePage> {
           }
 
           return Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
+              SizedBox(height: 5),
               Text(
                 'Estado del gimnasio',
                 style: TextStyle(
@@ -283,14 +285,15 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 12),
               Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: containerColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -301,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -330,22 +333,58 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Icon(Icons.refresh, size: 18),
                               SizedBox(width: 6),
-                              Text(' ', style: TextStyle(fontSize: 14)),
                             ],
                           ),
                         ),
                       ],
                     ),
+                    if (porcentaje >= 50 && horaSugerida.isNotEmpty) ...[
+                      SizedBox(height: 4),
+                      Builder(
+                        builder: (context) {
+                          String mensajeHora = '';
+                          try {
+                            final partes = horaSugerida.split(':');
+                            final hora = int.parse(partes[0]);
+                            final minuto = int.parse(partes[1]);
+                            final ahora = TimeOfDay.now();
+
+                            if (hora < 6) {
+                              mensajeHora = 'Abrimos a las 06:00 am';
+                            } else if (hora > 21 || (hora == 21 && minuto > 30)) {
+                              mensajeHora = 'Recomendamos asistir mañana';
+                            } else if (hora >= 21) {
+                              mensajeHora = 'Cerramos hasta las 10:00 pm';
+                            } else {
+                              final esPm = hora >= 12;
+                              int hora12 = hora % 12 == 0 ? 12 : hora % 12;
+                              final sufijo = esPm ? 'pm' : 'am';
+                              mensajeHora = 'Horario sugerido: ${hora12.toString().padLeft(2, '0')}:${partes[1]} $sufijo';
+                            }
+                          } catch (e) {
+                            mensajeHora = 'Horario sugerido no disponible';
+                          }
+
+                          return Text(
+                            mensajeHora,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ],
                 ),
               ),
-              Spacer(),
             ],
           );
         },
       ),
     );
   }
+
 
 
 
