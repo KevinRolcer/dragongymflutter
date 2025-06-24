@@ -278,7 +278,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               SizedBox(height: 5),
               Text(
-                'Estado del gimnasio',
+                'Destacados',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -309,10 +309,10 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Capacidad: ${porcentaje.toStringAsFixed(0)}%',
+                          'Espacio ocupado ${porcentaje.toStringAsFixed(0)}%',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
                         ElevatedButton(

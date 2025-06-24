@@ -11,6 +11,7 @@ class MembresiaScreen extends StatefulWidget {
 
 class _MembresiaScreenState extends State<MembresiaScreen> {
 
+
   int _selectedIndex = 3;
   List<Planes> membresias = [];
 
@@ -182,7 +183,26 @@ class _MembresiaScreenState extends State<MembresiaScreen> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
-        children: membresias.map((membresia) => _buildMembresiaCard(membresia)).toList(),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ...membresias.map((membresia) => _buildMembresiaCard(membresia)).toList(),
+          SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.pushNamed(context, '/pago');
+            },
+            icon: Icon(Icons.upload_file),
+            label: Text("Subir comprobante de pago"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'login.dart';
 import 'screens/home.dart';
 import 'screens/promo.dart';
 import 'screens/perfil.dart';
+import 'screens/pago.dart';
 import 'pin.dart';
 
 void main() async {
@@ -43,6 +44,8 @@ class MyApp extends StatelessWidget {
         '/promo': (context) => PromoScreen(),
         '/perfil': (context) => PerfilScreen(),
         '/membresia': (context)=> MembresiaScreen(),
+        '/pago': (context) => PagoScreen(),
+
       },
     );
   }
